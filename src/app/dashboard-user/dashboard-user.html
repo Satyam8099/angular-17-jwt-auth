@@ -1,0 +1,16 @@
+<div class="container mt-5">
+  <h2>Breakfast Menu</h2>
+  <div class="row">
+    <div class="col-md-4" *ngFor="let product of products">
+      <div class="card mb-3">
+        <img [src]="'C:/Users/Satyam Tripathi/Pictures/Screenshots/Screenshot 2025-09-10 120721.png'" class="card-img-top" alt="{{ product.name }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text">{{ product.description }}</p>
+          <p class="card-text"><strong>₹{{ product.price }}</strong></p>
+          <button class="btn btn-success" (click)="goToCheckout(product)">Order Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

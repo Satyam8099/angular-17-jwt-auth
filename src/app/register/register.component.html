@@ -13,27 +13,27 @@
       novalidate
     >
       <div class="form-group">
-        <label for="username">Username</label>
+        <label for="name">Username</label>
         <input
           type="text"
           class="form-control"
-          name="username"
-          [(ngModel)]="form.username"
+          name="name"
+          [(ngModel)]="form.name"
           required
           minlength="3"
           maxlength="20"
-          #username="ngModel"
-          [ngClass]="{ 'is-invalid': f.submitted && username.errors }"
+          #name="ngModel"
+          [ngClass]="{ 'is-invalid': f.submitted && name.errors }"
         />
-        @if (username.errors && f.submitted) {
+        @if (name.errors && f.submitted) {
         <div class="invalid-feedback">
-          @if (username.errors['required']) {
+          @if (name.errors['required']) {
           <div>Username is required</div>
           }
-          @if (username.errors['minlength']) {
+          @if (name.errors['minlength']) {
           <div>Username must be at least 3 characters</div>
           }
-          @if (username.errors['maxlength']) {
+          @if (name.errors['maxlength']) {
           <div>Username must be at most 20 characters</div>
           }
         </div>
@@ -85,6 +85,30 @@
         </div>
         }
       </div>
+      <div class="form-group">
+  <label for="mobile">Mobile Number</label>
+  <input
+    type="text"
+    class="form-control"
+    name="mobile"
+    [(ngModel)]="form.mobile"
+    required
+    pattern="^[0-9]{10}$"
+    #mobile="ngModel"
+    [ngClass]="{ 'is-invalid': f.submitted && mobile.errors }"
+  />
+  @if (mobile.errors && f.submitted) {
+    <div class="invalid-feedback">
+      @if (mobile.errors['required']) {
+        <div>Mobile number is required</div>
+      }
+      @if (mobile.errors['pattern']) {
+        <div>Mobile number must be a 10-digit number</div>
+      }
+    </div>
+  }
+</div>
+
       <div class="form-group">
         <button class="btn btn-primary btn-block">Sign Up</button>
       </div>

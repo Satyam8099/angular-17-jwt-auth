@@ -1,0 +1,21 @@
+.profile-container {
+  background-color: #f5f6fa;
+  padding: 20px;
+}
+
+.profile-card {
+  width: 100%;
+  max-width: 500px;
+}
+
+.profile-img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 3px solid #007bff;
+}
+
+.profile-details strong {
+  width: 100px;
+  display: inline-block;
+}

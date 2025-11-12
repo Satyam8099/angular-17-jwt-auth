@@ -1,9 +1,24 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { catchError, Observable, throwError } from 'rxjs';
 
-const AUTH_API = 'http://localhost:8080/api/auth/';
+const AUTH_API = 'https:/crudwebapi-e8bxg7dzbyffdjhp.canadacentral-01.azurewebsites.net/api/User/';
+export interface User {
+  id?: number;
+  name: string;
+  email: string;
+  mobile: string;
+  password: string;
+  address?: string;
+  age: number;
+  role?: string;
+  image?: [{ fileName: string; imageData: string }];
+}
 
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -12,32 +27,39 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post(
-      AUTH_API + 'signin',
-      {
-        username,
-        password,
-      },
-      httpOptions
-    );
+  loginUser(login: LoginRequest): Observable<User> {
+    return this.http.post<User>(`${AUTH_API}login`, login);
   }
 
-  register(username: string, email: string, password: string): Observable<any> {
-    return this.http.post(
-      AUTH_API + 'signup',
-      {
-        username,
-        email,
-        password,
-      },
-      httpOptions
-    );
+  createUser(user: User): Observable<User> {
+    return this.http.post<User>(AUTH_API, user);
   }
+
 
   logout(): Observable<any> {
-    return this.http.post(AUTH_API + 'signout', { }, httpOptions);
+    return this.http.get('https://yourapi.com/data')
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = '';
+    switch (error.status) {
+      case 400:
+        errorMessage = 'Bad request. Please check your input.';
+        break;
+      case 500:
+        errorMessage = 'Internal server error. Please try again later.';
+        break;
+      case 204:
+        errorMessage = 'No content available.';
+        break;
+      default:
+        errorMessage = 'Something went wrong.';
+    }
+    return throwError(() => new Error(errorMessage));
   }
 }

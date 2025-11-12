@@ -1,7 +1,12 @@
 <div id="app">
   <nav class="navbar navbar-expand navbar-dark bg-dark">
-    <a href="#" class="navbar-brand">bezKoder</a>
     <ul class="navbar-nav mr-auto" routerLinkActive="active">
+        @if (isLoggedOut) {
+        <div class="alert alert-success" role="alert">
+         Logged out Successfully!
+        </div>
+      }
+      
       <li class="nav-item">
         <a href="/home" class="nav-link" routerLink="home">Home </a>
       </li>

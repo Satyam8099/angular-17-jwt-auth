@@ -7,21 +7,27 @@ import { UserService } from '../_services/user.service';
   styleUrls: ['./board-moderator.component.css']
 })
 export class BoardModeratorComponent implements OnInit {
-  content?: string;
+  content?: any;
 
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.userService.getModeratorBoard().subscribe({
-      next: data => {
-        this.content = data;
+    debugger;
+    this.userService.getPublicContent().subscribe({
+      next: user => {
+        this.content = user.address;
+        
       },
       error: err => {
         if (err.error) {
           try {
+            console.log("Error details:", err);
+            console.log("Error details:", err.error);
             const res = JSON.parse(err.error);
             this.content = res.message;
           } catch {
+              console.log("Error details:", err);
+            console.log("Error details:", err.error);
             this.content = `Error with status: ${err.status} - ${err.statusText}`;
           }
         } else {

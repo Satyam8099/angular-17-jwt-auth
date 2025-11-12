@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../_services/auth.service';
+import { AuthService, LoginRequest, User} from '../_services/auth.service';
 import { StorageService } from '../_services/storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,34 +10,44 @@ import { StorageService } from '../_services/storage.service';
 })
 export class LoginComponent implements OnInit {
   form: any = {
-    username: null,
+    email: null,
     password: null
   };
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
-  roles: string[] = [];
+  role = '';
+   isLoginAlert = false;
 
-  constructor(private authService: AuthService, private storageService: StorageService) { }
+  constructor(private authService: AuthService, private storageService: StorageService, private router: Router) { }
 
   ngOnInit(): void {
     if (this.storageService.isLoggedIn()) {
       this.isLoggedIn = true;
-      this.roles = this.storageService.getUser().roles;
+      this.role = this.storageService.getUser().role;
     }
   }
 
   onSubmit(): void {
-    const { username, password } = this.form;
+    const user: User = this.form;
+    user.email = this.form.email;
+    this.authService.loginUser(user).subscribe({
+      next:(data: User)  => {
 
-    this.authService.login(username, password).subscribe({
-      next: data => {
-        this.storageService.saveUser(data);
-
-        this.isLoginFailed = false;
-        this.isLoggedIn = true;
-        this.roles = this.storageService.getUser().roles;
-        this.reloadPage();
+        if (data == null) {
+          this.errorMessage = "Invalid email or password";
+          this.isLoginFailed = true;
+          return;
+        }
+        else{
+          data.role ='ADMIN';
+          this.storageService.saveUser(data);
+          this.isLoginFailed = false;
+          this.isLoggedIn = true;
+          this.isLoginAlert = true;
+          this.router.navigate(['/dashboard']);
+        }
+       
       },
       error: err => {
         this.errorMessage = err.error.message;

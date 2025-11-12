@@ -11,6 +11,7 @@ export class StorageService {
   clean(): void {
     window.sessionStorage.clear();
   }
+  
 
   public saveUser(user: any): void {
     window.sessionStorage.removeItem(USER_KEY);
@@ -18,6 +19,7 @@ export class StorageService {
   }
 
   public getUser(): any {
+    debugger;
     const user = window.sessionStorage.getItem(USER_KEY);
     if (user) {
       return JSON.parse(user);

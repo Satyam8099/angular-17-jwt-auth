@@ -1,5 +1,15 @@
 <div class="container">
   <header class="jumbotron">
-    <p>{{ content }}</p>
+
+    <div >
+      <h2>{{ currentImage?.text }}</h2>
+      <img [src]="currentImage?.src" alt="Random Screen" class="img-fluid" style="max-height: 400px;">
+    </div>
+    <p>{{ content.name ? content.name : 'No name available' }}</p>
+    <p>{{ content.role ? content.email : 'No email available' }}</p>
+    <p>{{ content.email ? content.mobile : 'No mobile available' }}</p>
+    <p>{{ content.role ? content.address : 'No address available' }}</p>
+    <p>{{ content.email ? content.age : 'No age available' }}</p>
+    <p>{{ content.role ? content.role : 'No role available' }}</p>
   </header>
 </div>

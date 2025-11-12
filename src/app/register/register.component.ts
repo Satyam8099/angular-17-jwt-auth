@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../_services/auth.service';
+import { AuthService ,User } from '../_services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -19,9 +19,11 @@ export class RegisterComponent {
   constructor(private authService: AuthService) { }
 
   onSubmit(): void {
-    const { username, email, password } = this.form;
-
-    this.authService.register(username, email, password).subscribe({
+    debugger;
+    const user: User = this.form;
+    user.id = 0;
+    user.mobile = String(user.mobile); 
+    this.authService.createUser(user).subscribe({
       next: data => {
         console.log(data);
         this.isSuccessful = true;

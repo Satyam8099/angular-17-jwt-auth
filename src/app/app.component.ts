@@ -10,11 +10,12 @@ import { EventBusService } from './_shared/event-bus.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  private roles: string[] = [];
+  private role: string = '';
   isLoggedIn = false;
   showAdminBoard = false;
   showModeratorBoard = false;
   username?: string;
+  isLoggedOut = false;
 
   eventBusSub?: Subscription;
 
@@ -29,10 +30,9 @@ export class AppComponent {
 
     if (this.isLoggedIn) {
       const user = this.storageService.getUser();
-      this.roles = user.roles;
-
-      this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
-      this.showModeratorBoard = this.roles.includes('ROLE_MODERATOR');
+      this.role = user.role;       
+      this.showAdminBoard = this.role.endsWith('ADMIN');
+      this.showModeratorBoard = this.role.includes('ROLE_MODERATOR');
 
       this.username = user.username;
     }
@@ -43,16 +43,11 @@ export class AppComponent {
   }
 
   logout(): void {
-    this.authService.logout().subscribe({
-      next: res => {
-        console.log(res);
-        this.storageService.clean();
-
-        window.location.reload();
-      },
-      error: err => {
-        console.log(err);
-      }
-    });
+    this.storageService.clean();
+    window.location.reload();
+this.isLoggedOut = true;
+     setTimeout(() => {
+      this.isLoggedOut = false;
+    }, 3000);
   }
 }
