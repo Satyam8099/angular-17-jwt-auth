@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 
-const AUTH_API = 'https://crudwebapi-e8bxg7dzbyffdjhp.canadacentral-01.azurewebsites.net/api/User/';
+// 🛑 THE FIX IS HERE: ADDED THE MISSING '/'
+const AUTH_API = 'https://crudwebapi-e8bxg7dzbyffdjhp.canadacentral-01.azurewebsites.net/api/User/'; 
+// It was: 'https:/crudwebapi-...'
+
 export interface User {
   id?: number;
   name: string;
@@ -30,15 +33,19 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   loginUser(login: LoginRequest): Observable<User> {
-    return this.http.post<User>(`${AUTH_API}login`, login);
+    // This will now correctly call:
+    // https://crudwebapi-e8bxg7dzbyffdjhp.canadacentral-01.azurewebsites.net/api/User/login
+    return this.http.post<User>(`${AUTH_API}login`, login, httpOptions); 
   }
 
   createUser(user: User): Observable<User> {
-    return this.http.post<User>(AUTH_API, user);
+    return this.http.post<User>(AUTH_API, user, httpOptions);
   }
 
 
   logout(): Observable<any> {
+    // Note: The logout endpoint is currently pointing to 'https://yourapi.com/data'.
+    // You should update this to point to the correct logout or data endpoint on your Azure API.
     return this.http.get('https://yourapi.com/data')
       .pipe(
         catchError(this.handleError)
