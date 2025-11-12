@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 
-const AUTH_API = 'https:/crudwebapi-e8bxg7dzbyffdjhp.canadacentral-01.azurewebsites.net/api/User/';
+const AUTH_API = 'https://crudwebapi-e8bxg7dzbyffdjhp.canadacentral-01.azurewebsites.net/api/User/';
 export interface User {
   id?: number;
   name: string;
